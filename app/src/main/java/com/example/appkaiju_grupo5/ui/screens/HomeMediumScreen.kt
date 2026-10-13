@@ -1,6 +1,8 @@
 package com.example.appkaiju_grupo5.ui.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,11 +23,12 @@ import androidx.compose.ui.unit.dp
 import com.example.appkaiju_grupo5.R
 
 @Composable
-fun HomeMediumScreen() {
+fun HomeMediumScreen(onProductsClick: () -> Unit = {}) {
 
 Row(
 modifier = Modifier
 .fillMaxSize()
+.verticalScroll(rememberScrollState())
 .padding(32.dp),
 verticalAlignment = Alignment.CenterVertically,
 horizontalArrangement = Arrangement.Center
@@ -42,6 +45,7 @@ Spacer(modifier = Modifier.width(32.dp))
 
 // Contenido principal ubicado a la derecha.
 Column(
+modifier = Modifier.weight(1f),
 verticalArrangement = Arrangement.Center,
 horizontalAlignment = Alignment.Start
 ) {
@@ -59,9 +63,7 @@ style = MaterialTheme.typography.bodyLarge
 Spacer(modifier = Modifier.size(24.dp))
 
 Button(
-onClick = {
-// La navegación se implementará posteriormente.
-}
+onClick = onProductsClick
 ) {
 Text("Ver productos")
 }
