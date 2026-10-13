@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.example.appkaiju_grupo5.ui.HomeScreen
+import com.example.appkaiju_grupo5.ui.screens.AdaptiveHomeScreen
 import com.example.appkaiju_grupo5.ui.theme.AppKaiju_Grupo5Theme
 
 class MainActivity : ComponentActivity() {
@@ -14,7 +14,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             AppKaiju_Grupo5Theme {
-                HomeScreen()
+                AdaptiveHomeScreen()
             }
         }
     }
