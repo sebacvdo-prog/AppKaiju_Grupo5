@@ -1,17 +1,20 @@
 package com.example.appkaiju_grupo5.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.appkaiju_grupo5.ui.screens.AdaptiveHomeScreen
 import com.example.appkaiju_grupo5.ui.screens.PerfilScreen
-import com.example.appkaiju_grupo5.ui.screens.ProductosScreen
+import com.example.appkaiju_grupo5.ui.screens.ProductosRoute
+import com.example.appkaiju_grupo5.KaijuApplication
 import com.example.appkaiju_grupo5.viewmodel.ProductosViewModel
 
 @Composable
@@ -29,9 +32,11 @@ fun KaijuNavHost(
             AdaptiveHomeScreen(onProductsClick = onProductsClick)
         }
         composable(Screen.Products.route) {
-            val productsViewModel: ProductosViewModel = viewModel()
-            val state by productsViewModel.uiState.collectAsStateWithLifecycle()
-            ProductosScreen(state = state, onToggleStockFilter = productsViewModel::alternarFiltroStock)
+            val app = LocalContext.current.applicationContext as KaijuApplication
+            val productsViewModel: ProductosViewModel = viewModel(factory = viewModelFactory {
+                initializer { ProductosViewModel(createSavedStateHandle(), app.inventarioRepository) }
+            })
+            ProductosRoute(productsViewModel)
         }
         composable(Screen.Profile.route) {
             PerfilScreen(onRegisterClick = {
