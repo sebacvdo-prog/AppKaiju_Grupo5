@@ -14,6 +14,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -28,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.example.appkaiju_grupo5.ui.theme.AppKaiju_Grupo5Theme
 
 @Composable
-fun PerfilScreen(modifier: Modifier = Modifier) {
+fun PerfilScreen(modifier: Modifier = Modifier, onRegisterClick: () -> Unit = {}) {
     Box(
         modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(24.dp).testTag("screen_profile"),
         contentAlignment = Alignment.TopCenter
@@ -61,6 +62,9 @@ fun PerfilScreen(modifier: Modifier = Modifier) {
                 "Este perfil es ficticio y se utiliza para demostrar la navegación de Kaiju.",
                 style = MaterialTheme.typography.bodyMedium
             )
+            Button(onClick = onRegisterClick, modifier = Modifier.fillMaxWidth().testTag("perfil_registro")) {
+                Text("Registrar usuario")
+            }
         }
     }
 }
