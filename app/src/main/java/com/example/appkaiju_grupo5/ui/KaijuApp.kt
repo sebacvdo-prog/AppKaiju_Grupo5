@@ -119,7 +119,14 @@ private fun KaijuAppLayout(
                     navigationIcon = {
                         if (currentScreen != Screen.Home) {
                             IconButton(onClick = onBack) {
-                                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver a Inicio")
+                                Icon(
+                                    Icons.AutoMirrored.Filled.ArrowBack,
+                                    contentDescription = when (currentScreen) {
+                                        Screen.Register -> "Volver a Perfil"
+                                        Screen.Summary -> "Volver al formulario"
+                                        else -> "Volver a Inicio"
+                                    }
+                                )
                             }
                         } else if (!expanded) {
                             IconButton(onClick = { scope.launch { drawerState.open() } }) {
@@ -141,7 +148,7 @@ private fun KaijuAppLayout(
                     NavigationBar(modifier = Modifier.testTag("bottom_navigation")) {
                         Screen.destinations.forEach { screen ->
                             NavigationBarItem(
-                                selected = screen == currentScreen,
+                                selected = screen == currentScreen.section,
                                 onClick = { onNavigate(screen) },
                                 icon = { Icon(screen.icon(), contentDescription = null) },
                                 label = { Text(screen.title) },
@@ -207,7 +214,7 @@ private fun KaijuDrawerContent(currentScreen: Screen, onNavigate: (Screen) -> Un
         NavigationDrawerItem(
             label = { Text(screen.title) },
             icon = { Icon(screen.icon(), contentDescription = null) },
-            selected = screen == currentScreen,
+            selected = screen == currentScreen.section,
             onClick = { onNavigate(screen) },
             modifier = Modifier.padding(horizontal = 12.dp).testTag("drawer_${screen.route}")
         )
@@ -217,7 +224,7 @@ private fun KaijuDrawerContent(currentScreen: Screen, onNavigate: (Screen) -> Un
 private fun Screen.icon(): ImageVector = when (this) {
     Screen.Home -> Icons.Default.Home
     Screen.Products -> Icons.Default.ShoppingCart
-    Screen.Profile -> Icons.Default.Person
+    Screen.Profile, Screen.Register, Screen.Summary -> Icons.Default.Person
 }
 
 @Preview(name = "Compacto", widthDp = 360, heightDp = 800, showBackground = true)

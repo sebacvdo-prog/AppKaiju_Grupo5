@@ -34,8 +34,11 @@ fun KaijuNavHost(
             ProductosScreen(state = state, onToggleStockFilter = productsViewModel::alternarFiltroStock)
         }
         composable(Screen.Profile.route) {
-            PerfilScreen()
+            PerfilScreen(onRegisterClick = {
+                navController.navigate(REGISTRO_GRAPH_ROUTE) { launchSingleTop = true }
+            })
         }
+        registroNavigation(navController)
     }
 }
 
