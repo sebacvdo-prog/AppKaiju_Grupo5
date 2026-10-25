@@ -12,6 +12,7 @@ kotlin = "2.2.10"
 composeBom = "2026.02.01"
 room = "2.8.5"
 ksp = "2.3.12"
+exifinterface = "1.4.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -38,6 +39,7 @@ androidx-compose-animation = { group = "androidx.compose.animation", name = "ani
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 androidx-room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
+androidx-exifinterface = { group = "androidx.exifinterface", name = "exifinterface", version.ref = "exifinterface" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

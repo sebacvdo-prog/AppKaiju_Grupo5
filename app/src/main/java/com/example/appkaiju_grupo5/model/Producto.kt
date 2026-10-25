@@ -6,7 +6,8 @@ data class Producto(
     val categoria: String,
     val stock: Int,
     val stockMinimo: Int,
-    val ubicacion: String
+    val ubicacion: String,
+    val fotoRuta: String? = null
 ) {
     val requiereReposicion: Boolean
         get() = stock <= stockMinimo

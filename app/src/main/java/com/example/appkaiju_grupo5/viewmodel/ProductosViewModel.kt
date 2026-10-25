@@ -40,7 +40,10 @@ class ProductosViewModel(
     private val repository: InventarioRepository
 ) : ViewModel() {
     private var inventario = emptyList<Producto>()
-    private val state = MutableStateFlow(ProductosUiState(soloStockBajo = savedStateHandle[SOLO_STOCK_BAJO] ?: false))
+    private val state = MutableStateFlow(ProductosUiState(
+        soloStockBajo = savedStateHandle[SOLO_STOCK_BAJO] ?: false,
+        editor = restaurarEditor()
+    ))
     val uiState = state.asStateFlow()
     private val confirmaciones = Channel<InventarioConfirmacion>(Channel.BUFFERED)
     val eventos = confirmaciones.receiveAsFlow()
@@ -65,12 +68,15 @@ class ProductosViewModel(
 
     fun abrirEditor(producto: Producto? = null) {
         if (state.value.guardando) return
-        state.update { it.copy(editor = EditorProductoState(producto?.let(ProductoFormulario::desde) ?: ProductoFormulario()), error = null) }
+        val formulario = producto?.let(ProductoFormulario::desde) ?: ProductoFormulario()
+        guardarEditor(formulario)
+        state.update { it.copy(editor = EditorProductoState(formulario), error = null) }
     }
 
     fun actualizarFormulario(formulario: ProductoFormulario) {
         val editor = state.value.editor ?: return
         if (state.value.guardando) return
+        guardarEditor(formulario)
         state.update { it.copy(editor = editor.copy(
             formulario = formulario,
             errores = if (editor.validacionSolicitada) formulario.validar() else ProductoErrores()
@@ -78,7 +84,10 @@ class ProductosViewModel(
     }
 
     fun cerrarEditor() {
-        if (!state.value.guardando) state.update { it.copy(editor = null, error = null) }
+        if (!state.value.guardando) {
+            savedStateHandle.remove<ArrayList<String>>(EDITOR)
+            state.update { it.copy(editor = null, error = null) }
+        }
     }
 
     fun guardarProducto() {
@@ -100,6 +109,7 @@ class ProductosViewModel(
         viewModelScope.launch {
             try {
                 accion()
+                if (cerrarEditor) savedStateHandle.remove<ArrayList<String>>(EDITOR)
                 state.update { if (cerrarEditor) it.copy(editor = null) else it }
                 confirmaciones.send(InventarioConfirmacion(mensaje))
             } catch (cancelled: CancellationException) {
@@ -123,5 +133,17 @@ class ProductosViewModel(
 
     private companion object {
         const val SOLO_STOCK_BAJO = "soloStockBajo"
+        const val EDITOR = "editorProducto"
+    }
+
+    private fun guardarEditor(form: ProductoFormulario) {
+        savedStateHandle[EDITOR] = arrayListOf(form.id.toString(), form.nombre, form.categoria,
+            form.stock, form.stockMinimo, form.ubicacion)
+    }
+
+    private fun restaurarEditor(): EditorProductoState? {
+        val values = savedStateHandle.get<ArrayList<String>>(EDITOR)?.takeIf { it.size == 6 } ?: return null
+        val id = values[0].toIntOrNull() ?: return null
+        return EditorProductoState(ProductoFormulario(id, values[1], values[2], values[3], values[4], values[5]))
     }
 }

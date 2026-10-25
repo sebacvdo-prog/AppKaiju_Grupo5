@@ -16,6 +16,7 @@ import com.example.appkaiju_grupo5.ui.screens.PerfilScreen
 import com.example.appkaiju_grupo5.ui.screens.ProductosRoute
 import com.example.appkaiju_grupo5.KaijuApplication
 import com.example.appkaiju_grupo5.viewmodel.ProductosViewModel
+import com.example.appkaiju_grupo5.viewmodel.FotoProductoViewModel
 
 @Composable
 fun KaijuNavHost(
@@ -36,7 +37,10 @@ fun KaijuNavHost(
             val productsViewModel: ProductosViewModel = viewModel(factory = viewModelFactory {
                 initializer { ProductosViewModel(createSavedStateHandle(), app.inventarioRepository) }
             })
-            ProductosRoute(productsViewModel)
+            val fotoViewModel: FotoProductoViewModel = viewModel(factory = viewModelFactory {
+                initializer { FotoProductoViewModel(createSavedStateHandle(), app.inventarioRepository, app.fotosProducto) }
+            })
+            ProductosRoute(productsViewModel, fotoViewModel, app.fotosProducto)
         }
         composable(Screen.Profile.route) {
             PerfilScreen(onRegisterClick = {

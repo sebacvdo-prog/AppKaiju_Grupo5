@@ -33,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.appkaiju_grupo5.data.ProductosIniciales
 import com.example.appkaiju_grupo5.model.Producto
+import com.example.appkaiju_grupo5.ui.components.MiniaturaProducto
 import com.example.appkaiju_grupo5.ui.theme.AppKaiju_Grupo5Theme
 import com.example.appkaiju_grupo5.viewmodel.ProductosUiState
 
@@ -122,6 +123,7 @@ private fun ProductoCard(
             Text(producto.categoria, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
             Text(producto.nombre, style = MaterialTheme.typography.titleLarge)
             Text(producto.ubicacion, style = MaterialTheme.typography.bodyMedium)
+            producto.fotoRuta?.let { MiniaturaProducto(it, "Fotografía de ${producto.nombre}") }
             AnimatedContent(targetState = producto.stock, label = "cantidad_stock") { stock ->
                 Text("Stock: $stock unidades", style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.testTag("stock_${producto.id}"))
