@@ -4,6 +4,13 @@
 
 Aplicación Android desarrollada en Kotlin para gestionar un inventario local, consultar existencias y asociar fotografías a los productos.
 
+## Autoría
+
+- **Estudiante:** Sebastián Acevedo.
+- **Modalidad:** Desarrollo individual, informado previamente al docente.
+- **Asignatura:** Desarrollo de Aplicaciones Móviles (DSY1105).
+- **Institución:** Duoc UC.
+
 ## Problema y objetivo
 
 La información dispersa sobre productos, cantidades y ubicaciones dificulta el control de una bodega y la identificación de artículos que necesitan reposición. La trazabilidad del inventario requiere mantener esa información disponible y relacionarla con cada producto.
