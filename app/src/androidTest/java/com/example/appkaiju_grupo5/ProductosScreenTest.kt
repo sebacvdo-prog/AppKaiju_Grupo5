@@ -23,6 +23,8 @@ import com.example.appkaiju_grupo5.data.local.KaijuDatabase
 import com.example.appkaiju_grupo5.ui.screens.ProductosRoute
 import com.example.appkaiju_grupo5.ui.theme.AppKaiju_Grupo5Theme
 import com.example.appkaiju_grupo5.viewmodel.ProductosViewModel
+import com.example.appkaiju_grupo5.viewmodel.FotoProductoViewModel
+import com.example.appkaiju_grupo5.device.FotoProductoStorage
 import java.util.UUID
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -51,7 +53,11 @@ class ProductosScreenTest {
                 val vm: ProductosViewModel = viewModel(factory = viewModelFactory {
                     initializer { ProductosViewModel(SavedStateHandle(), repository) }
                 })
-                ProductosRoute(vm)
+                val fotos = FotoProductoStorage(context)
+                val fotoVm: FotoProductoViewModel = viewModel(factory = viewModelFactory {
+                    initializer { FotoProductoViewModel(SavedStateHandle(), repository, fotos) }
+                })
+                ProductosRoute(vm, fotoVm, fotos)
             }
         }
     }

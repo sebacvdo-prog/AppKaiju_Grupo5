@@ -61,6 +61,29 @@ class ProductosViewModelTest {
         assertEquals(original.uiState.value, recreated.uiState.value)
     }
 
+    @Test fun editorDraftIsRestoredWithProductIdWhileCameraIsOpen() = runTest {
+        val saved = SavedStateHandle()
+        val original = ProductosViewModel(saved, repository)
+        runCurrent()
+        original.abrirEditor(repository.productos.value[1])
+        val draft = original.uiState.value.editor!!.formulario.copy(nombre = "Borrador pendiente")
+        original.actualizarFormulario(draft)
+        val recreated = ProductosViewModel(SavedStateHandle(saved.keys().associateWith { saved.get<Any?>(it) }), repository)
+        runCurrent()
+        assertEquals(draft, recreated.uiState.value.editor!!.formulario)
+        assertEquals(2, recreated.uiState.value.editor!!.formulario.id)
+    }
+
+    @Test fun closingEditorRemovesSavedDraft() = runTest {
+        val saved = SavedStateHandle()
+        val vm = ProductosViewModel(saved, repository)
+        vm.abrirEditor()
+        vm.actualizarFormulario(formulario)
+        vm.cerrarEditor()
+        val recreated = ProductosViewModel(SavedStateHandle(saved.keys().associateWith { saved.get<Any?>(it) }), repository)
+        assertNull(recreated.uiState.value.editor)
+    }
+
     @Test fun createAndEditUpdateInventoryReactivelyAndConfirmOncePerSave() = runTest {
         val viewModel = ProductosViewModel(SavedStateHandle(), repository)
         val eventos = mutableListOf<InventarioConfirmacion>()
@@ -147,7 +170,7 @@ class ProductosViewModelTest {
     }
 }
 
-private class FakeInventarioRepository : InventarioRepository {
+internal class FakeInventarioRepository : InventarioRepository {
     val productos = MutableStateFlow(ProductosIniciales.productos)
     var escrituras = 0
     var fallar = false
@@ -164,5 +187,11 @@ private class FakeInventarioRepository : InventarioRepository {
     override suspend fun cambiarStock(id: Int, cantidad: Int) {
         check(!fallar)
         productos.value = productos.value.map { if (it.id == id) it.copy(stock = it.stock + cantidad) else it }
+    }
+    override suspend fun actualizarFoto(id: Int, archivo: String): String? {
+        check(!fallar)
+        val anterior = productos.value.single { it.id == id }
+        productos.value = productos.value.map { if (it.id == id) it.copy(fotoRuta = archivo) else it }
+        return anterior.fotoRuta
     }
 }

@@ -34,6 +34,7 @@ android {
     buildFeatures {
         compose = true
     }
+    sourceSets.getByName("androidTest").assets.srcDir("$projectDir/schemas")
 }
 
 ksp {
@@ -56,6 +57,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.compose.animation)
     implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.exifinterface)
     ksp(libs.androidx.room.compiler)
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)

@@ -11,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -26,7 +27,11 @@ fun ProductoEditorDialog(
     error: String?,
     onChange: (ProductoFormulario) -> Unit,
     onSave: () -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    fotoRuta: String? = null,
+    errorFoto: String? = null,
+    capturando: Boolean = false,
+    onTakePhoto: () -> Unit = {}
 ) {
     val form = editor.formulario
     AlertDialog(
@@ -42,6 +47,14 @@ fun ProductoEditorDialog(
                 CampoProducto("Stock", form.stock, editor.errores.stock, "producto_stock", guardando, true) { onChange(form.copy(stock = it)) }
                 CampoProducto("Stock mínimo", form.stockMinimo, editor.errores.stockMinimo, "producto_minimo", guardando, true) { onChange(form.copy(stockMinimo = it)) }
                 CampoProducto("Ubicación", form.ubicacion, editor.errores.ubicacion, "producto_ubicacion", guardando) { onChange(form.copy(ubicacion = it)) }
+                fotoRuta?.let { MiniaturaProducto(it, "Fotografía del producto") }
+                OutlinedButton(onClick = onTakePhoto, enabled = form.id > 0 && !guardando && !capturando,
+                    modifier = Modifier.testTag("producto_tomar_foto")) {
+                    Text(if (capturando) "Procesando foto…" else "Tomar foto")
+                }
+                Text(if (form.id == 0) "Guarda el producto para agregar su fotografía."
+                    else "La foto se guarda al confirmar la captura.", style = MaterialTheme.typography.bodySmall)
+                errorFoto?.let { Text(it, color = MaterialTheme.colorScheme.error) }
                 error?.let { Text(it, color = MaterialTheme.colorScheme.error) }
             }
         },

@@ -7,4 +7,5 @@ interface InventarioRepository {
     fun observarProductos(): Flow<List<Producto>>
     suspend fun guardar(producto: Producto): Long
     suspend fun cambiarStock(id: Int, cantidad: Int)
+    suspend fun actualizarFoto(id: Int, archivo: String): String?
 }

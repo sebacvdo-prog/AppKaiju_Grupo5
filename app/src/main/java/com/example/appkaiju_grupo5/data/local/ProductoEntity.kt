@@ -11,8 +11,9 @@ data class ProductoEntity(
     val categoria: String,
     val stock: Int,
     val stockMinimo: Int,
-    val ubicacion: String
+    val ubicacion: String,
+    val fotoRuta: String? = null
 )
 
-fun ProductoEntity.toProducto() = Producto(id, nombre, categoria, stock, stockMinimo, ubicacion)
-fun Producto.toEntity() = ProductoEntity(id, nombre, categoria, stock, stockMinimo, ubicacion)
+fun ProductoEntity.toProducto() = Producto(id, nombre, categoria, stock, stockMinimo, ubicacion, fotoRuta)
+fun Producto.toEntity() = ProductoEntity(id, nombre, categoria, stock, stockMinimo, ubicacion, fotoRuta)

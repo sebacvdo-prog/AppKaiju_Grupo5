@@ -4,6 +4,7 @@ import com.example.appkaiju_grupo5.data.local.ProductoDao
 import com.example.appkaiju_grupo5.data.local.toEntity
 import com.example.appkaiju_grupo5.data.local.toProducto
 import com.example.appkaiju_grupo5.model.Producto
+import com.example.appkaiju_grupo5.device.FotosProducto
 import kotlinx.coroutines.flow.map
 
 class RoomInventarioRepository(private val dao: ProductoDao) : InventarioRepository {
@@ -20,7 +21,8 @@ class RoomInventarioRepository(private val dao: ProductoDao) : InventarioReposit
             ubicacion = producto.ubicacion.trim()
         ).toEntity()
         if (producto.id == 0) return dao.insertar(entity)
-        check(dao.actualizar(entity) == 1) { "El producto ya no está disponible." }
+        check(dao.actualizar(entity.id, entity.nombre, entity.categoria, entity.stock,
+            entity.stockMinimo, entity.ubicacion) == 1) { "El producto ya no está disponible." }
         return producto.id.toLong()
     }
 
@@ -29,5 +31,10 @@ class RoomInventarioRepository(private val dao: ProductoDao) : InventarioReposit
         check(dao.cambiarStock(id, cantidad) == 1) {
             "No se pudo modificar el stock: revisa la cantidad y el producto."
         }
+    }
+
+    override suspend fun actualizarFoto(id: Int, archivo: String): String? {
+        require(FotosProducto.nombreSeguro(archivo)) { "Nombre de fotografía no válido." }
+        return dao.reemplazarFoto(id, archivo)
     }
 }
