@@ -14,9 +14,12 @@ import androidx.navigation.compose.composable
 import com.example.appkaiju_grupo5.ui.screens.AdaptiveHomeScreen
 import com.example.appkaiju_grupo5.ui.screens.PerfilScreen
 import com.example.appkaiju_grupo5.ui.screens.ProductosRoute
+import com.example.appkaiju_grupo5.ui.components.IndicadorCotizacion
 import com.example.appkaiju_grupo5.KaijuApplication
 import com.example.appkaiju_grupo5.viewmodel.ProductosViewModel
 import com.example.appkaiju_grupo5.viewmodel.FotoProductoViewModel
+import com.example.appkaiju_grupo5.viewmodel.InventarioRemotoViewModel
+import com.example.appkaiju_grupo5.viewmodel.CotizacionViewModel
 
 @Composable
 fun KaijuNavHost(
@@ -30,7 +33,11 @@ fun KaijuNavHost(
         modifier = modifier
     ) {
         composable(Screen.Home.route) {
-            AdaptiveHomeScreen(onProductsClick = onProductsClick)
+            val app = LocalContext.current.applicationContext as KaijuApplication
+            val cotizacion: CotizacionViewModel = viewModel(factory = viewModelFactory {
+                initializer { CotizacionViewModel(app.tipoCambioRepository) }
+            })
+            AdaptiveHomeScreen(onProductsClick = onProductsClick, indicador = { IndicadorCotizacion(cotizacion) })
         }
         composable(Screen.Products.route) {
             val app = LocalContext.current.applicationContext as KaijuApplication
@@ -40,7 +47,12 @@ fun KaijuNavHost(
             val fotoViewModel: FotoProductoViewModel = viewModel(factory = viewModelFactory {
                 initializer { FotoProductoViewModel(createSavedStateHandle(), app.inventarioRepository, app.fotosProducto) }
             })
-            ProductosRoute(productsViewModel, fotoViewModel, app.fotosProducto)
+            val remotoViewModel = app.inventarioRemotoRepository?.let { repository ->
+                viewModel<InventarioRemotoViewModel>(factory = viewModelFactory {
+                    initializer { InventarioRemotoViewModel(repository, createSavedStateHandle()) }
+                })
+            }
+            ProductosRoute(productsViewModel, fotoViewModel, app.fotosProducto, remotoViewModel)
         }
         composable(Screen.Profile.route) {
             PerfilScreen(onRegisterClick = {

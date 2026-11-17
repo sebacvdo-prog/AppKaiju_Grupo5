@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">AppKaiju_Grupo5</string>
+    <string name="kaiju_api_base_url" translatable="false"></string>
+    <string name="cotizacion_titulo">Tipo de cambio USD/CLP</string>
+    <string name="cotizacion_valor">1 USD = %1$s CLP</string>
+    <string name="cotizacion_fecha">Fecha de referencia: %1$s</string>
+    <string name="cotizacion_fuente">Fuente: Frankfurter</string>
+    <string name="cotizacion_cargando">Consultando cotización…</string>
+    <string name="cotizacion_actualizar">Actualizar cotización</string>
+    <string name="cotizacion_reintentar">Reintentar cotización</string>
+    <string name="cotizacion_conexion">No se pudo conectar con Frankfurter. Revisa tu conexión a internet.</string>
+    <string name="cotizacion_servicio">Frankfurter no está disponible en este momento.</string>
+    <string name="cotizacion_respuesta">Frankfurter devolvió una cotización inválida.</string>
 </resources>

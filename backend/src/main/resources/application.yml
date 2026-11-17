@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: Kaiju Inventory API
+  datasource:
+    url: ${KAIJU_DB_URL:jdbc:postgresql://localhost:5432/kaiju_inventory}
+    username: ${KAIJU_DB_USER}
+    password: ${KAIJU_DB_PASSWORD}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+  jackson:
+    deserialization:
+      accept-float-as-int: false
+    mapper:
+      allow-coercion-of-scalars: false
+server:
+  address: 127.0.0.1
+  port: 8080

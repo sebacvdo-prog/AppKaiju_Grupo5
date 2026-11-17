@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.example.appkaiju_grupo5.R
 
 @Composable
-fun HomeCompactScreen(onProductsClick: () -> Unit = {}) {
+fun HomeCompactScreen(onProductsClick: () -> Unit = {}, indicador: (@Composable () -> Unit)? = null) {
 
 Column(
 modifier = Modifier
@@ -59,6 +59,11 @@ Button(
 onClick = onProductsClick
 ) {
 Text("Ver productos")
+}
+
+if (indicador != null) {
+    Spacer(modifier = Modifier.height(20.dp))
+    indicador()
 }
 }
 }
