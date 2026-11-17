@@ -69,7 +69,7 @@ fun ProductoEditorDialog(
 }
 
 @Composable
-private fun CampoProducto(
+internal fun CampoProducto(
     label: String, value: String, error: String?, tag: String,
     guardando: Boolean, numerico: Boolean = false, onChange: (String) -> Unit
 ) {

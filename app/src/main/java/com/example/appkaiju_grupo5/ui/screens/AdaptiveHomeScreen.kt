@@ -11,16 +11,17 @@ import com.example.appkaiju_grupo5.ui.utils.getWindowSize
 @Composable
 fun AdaptiveHomeScreen(
     modifier: Modifier = Modifier,
-    onProductsClick: () -> Unit = {}
+    onProductsClick: () -> Unit = {},
+    indicador: (@Composable () -> Unit)? = null
 ) {
 
     val windowSize = getWindowSize()
 
     Box(modifier = modifier.fillMaxSize().testTag("screen_home")) {
         when (windowSize) {
-            WindowSize.Compact -> HomeCompactScreen(onProductsClick = onProductsClick)
-            WindowSize.Medium -> HomeMediumScreen(onProductsClick = onProductsClick)
-            WindowSize.Expanded -> HomeExpandedScreen(onProductsClick = onProductsClick)
+            WindowSize.Compact -> HomeCompactScreen(onProductsClick = onProductsClick, indicador = indicador)
+            WindowSize.Medium -> HomeMediumScreen(onProductsClick = onProductsClick, indicador = indicador)
+            WindowSize.Expanded -> HomeExpandedScreen(onProductsClick = onProductsClick, indicador = indicador)
         }
     }
 }

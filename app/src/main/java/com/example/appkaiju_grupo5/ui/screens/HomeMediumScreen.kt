@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.example.appkaiju_grupo5.R
 
 @Composable
-fun HomeMediumScreen(onProductsClick: () -> Unit = {}) {
+fun HomeMediumScreen(onProductsClick: () -> Unit = {}, indicador: (@Composable () -> Unit)? = null) {
 
 Row(
 modifier = Modifier
@@ -66,6 +66,11 @@ Button(
 onClick = onProductsClick
 ) {
 Text("Ver productos")
+}
+
+if (indicador != null) {
+    Spacer(modifier = Modifier.size(20.dp))
+    indicador()
 }
 }
 }

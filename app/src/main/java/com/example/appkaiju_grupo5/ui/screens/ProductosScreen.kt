@@ -44,7 +44,8 @@ fun ProductosScreen(
     modifier: Modifier = Modifier,
     onAdd: () -> Unit = {},
     onEdit: (Producto) -> Unit = {},
-    onStockChange: (Producto, Int) -> Unit = { _, _ -> }
+    onStockChange: (Producto, Int) -> Unit = { _, _ -> },
+    onConsultarServidor: (() -> Unit)? = null
 ) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 260.dp),
@@ -71,6 +72,11 @@ fun ProductosScreen(
                 )
                 Button(onClick = onAdd, enabled = !state.cargando && !state.guardando,
                     modifier = Modifier.testTag("producto_nuevo")) { Text("Nuevo producto") }
+                onConsultarServidor?.let {
+                    TextButton(onClick = it, modifier = Modifier.testTag("consultar_servidor")) {
+                        Text("Consultar servidor")
+                    }
+                }
                 if (state.cargando || state.guardando) LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
                 if (state.editor == null) state.error?.let { Text(it, color = MaterialTheme.colorScheme.error) }
             }

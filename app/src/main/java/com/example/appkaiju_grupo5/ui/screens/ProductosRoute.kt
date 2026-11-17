@@ -10,7 +10,10 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.Lifecycle
@@ -20,14 +23,21 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.appkaiju_grupo5.device.VibracionInventario
 import com.example.appkaiju_grupo5.device.FotoProductoStorage
 import com.example.appkaiju_grupo5.viewmodel.FotoProductoViewModel
+import com.example.appkaiju_grupo5.viewmodel.InventarioRemotoViewModel
 import com.example.appkaiju_grupo5.ui.components.ProductoEditorDialog
 import com.example.appkaiju_grupo5.viewmodel.ProductosViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun ProductosRoute(viewModel: ProductosViewModel, fotoViewModel: FotoProductoViewModel, fotos: FotoProductoStorage) {
+internal fun ProductosRoute(
+    viewModel: ProductosViewModel,
+    fotoViewModel: FotoProductoViewModel,
+    fotos: FotoProductoStorage,
+    remotoViewModel: InventarioRemotoViewModel? = null
+) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val fotoState by fotoViewModel.uiState.collectAsStateWithLifecycle()
+    var consultaVisible by rememberSaveable { mutableStateOf(false) }
     val camera = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { exito ->
         fotoViewModel.finalizarCaptura(exito)
     }
@@ -66,10 +76,19 @@ fun ProductosRoute(viewModel: ProductosViewModel, fotoViewModel: FotoProductoVie
             modifier = Modifier.weight(1f),
             onAdd = { fotoViewModel.limpiarError(); viewModel.abrirEditor() },
             onEdit = { fotoViewModel.limpiarError(); viewModel.abrirEditor(it) },
-            onStockChange = viewModel::cambiarStock
+            onStockChange = viewModel::cambiarStock,
+            onConsultarServidor = remotoViewModel?.let { remoto ->
+                {
+                    remoto.abrir()
+                    consultaVisible = true
+                }
+            }
         )
         // Reserva su espacio: la confirmación no tapa los botones de la última tarjeta.
         SnackbarHost(snackbar)
+    }
+    if (consultaVisible && remotoViewModel != null) {
+        InventarioRemotoDialog(remotoViewModel, onDismiss = { consultaVisible = false })
     }
     state.editor?.let {
         ProductoEditorDialog(it, state.guardando || fotoState.ocupada, state.error,
