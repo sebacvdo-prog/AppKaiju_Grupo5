@@ -5,15 +5,22 @@ build/
 
 # Local configuration file (sdk path, etc)
 local.properties
+.env
+.env.*
+!.env.example
 
 # Log/OS Files
 *.log
+*.log.*
+.DS_Store
+Thumbs.db
 
 # Android Studio generated files and folders
 captures/
 .externalNativeBuild/
 .cxx/
 *.apk
+*.aab
 output.json
 
 # IntelliJ
@@ -23,9 +30,47 @@ misc.xml
 deploymentTargetDropDown.xml
 render.experimental.xml
 
-# Keystore files
+# Signing, TLS private keys and local credentials
 *.jks
 *.keystore
+*.p12
+*.pfx
+*.key
+*.key.pem
+*-key.pem
+*private*.pem
+*.credential.xml
+*.credentials.xml
+.pgpass
+pgpass.conf
+
+# Local databases and backups
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+*.dump
+*.dump.sql
+*.dmp
+*.backup
+*.backup.sql
+pg_dump*.sql
+pgdata/
+postgres-data/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*~
+.tmp/
+tmp/
+temp/
+__pycache__/
 
 # Google Services (e.g. APIs or Firebase)
 google-services.json
