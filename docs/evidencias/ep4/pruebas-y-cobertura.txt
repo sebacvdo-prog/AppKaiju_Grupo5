@@ -1,0 +1,17 @@
+AppKaiju EP4 — resumen de pruebas y cobertura verificado a partir de los resultados del 16/11/2026.
+
+Android JVM (XML JUnit de testDebugUnitTest)
+74 pruebas aprobadas, sin fallos, errores ni omisiones.
+
+Android instrumentado (registro de la corrida API 35)
+OK (27 tests)
+
+Spring Boot (resumen de Maven Surefire)
+[INFO] Tests run: 13, Failures: 0, Errors: 0, Skipped: 0
+
+JaCoCo 0.8.14 (contador LINE en XML)
+Android JVM, línea base: 702/1119 líneas · 62,73 %
+Android JVM, resultado final: 1026/1119 líneas · 91,69 %
+Backend, resultado final: 147/152 líneas · 96,71 %
+
+Total: 114 pruebas automatizadas aprobadas.

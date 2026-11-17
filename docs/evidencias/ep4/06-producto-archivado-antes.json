@@ -1,0 +1,10 @@
+{
+  "uuid": "f3445688-3fd2-4160-837e-22a0bb26edc0",
+  "nombre": "EP4 Firmado Emulador",
+  "categoria": "Pruebas",
+  "ubicacion": "Estante B",
+  "stock": 5,
+  "stockMinimo": 2,
+  "archivado": true,
+  "version": 4
+}
